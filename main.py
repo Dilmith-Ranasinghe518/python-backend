@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # Import modular routers
 from auth.routes import router as auth_router
 from zoom_clone.routes import router as zoom_clone_router
+from whatsapp_clone.routes import router as whatsapp_router
 
 app = FastAPI(title="Zoom Clone Multi-Backend Services")
 
@@ -26,6 +27,7 @@ app.add_middleware(
 # Include modular sub-routers
 app.include_router(auth_router)
 app.include_router(zoom_clone_router)
+app.include_router(whatsapp_router)
 
 @app.get("/")
 def read_root():
