@@ -7,6 +7,8 @@ from auth.routes import router as auth_router
 from zoom_clone.routes import router as zoom_clone_router
 from whatsapp_clone.routes import router as whatsapp_router
 from exam_hub.routes import router as exam_hub_router
+from ai_agent_browser.routes import router as ai_agent_browser_router
+from ai_browser.routes import router as ai_browser_router
 
 app = FastAPI(title="Multi-Backend Python Services")
 
@@ -32,6 +34,8 @@ app.include_router(auth_router)
 app.include_router(zoom_clone_router)
 app.include_router(whatsapp_router)
 app.include_router(exam_hub_router)
+app.include_router(ai_agent_browser_router)
+app.include_router(ai_browser_router)
 
 @app.get("/")
 def read_root():
