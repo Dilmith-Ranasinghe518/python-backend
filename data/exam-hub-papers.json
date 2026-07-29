@@ -1,0 +1,200 @@
+{
+  "nextId": 100004,
+  "papers": [
+    {
+      "title": "G.C.E. O/L Mathematics 2026 (Practice) \u2014 English",
+      "subject": "Mathematics",
+      "year": 2026,
+      "language": "English",
+      "source": "template",
+      "content_markdown": "# G.C.E. O/L \u2014 Mathematics (Practice Paper)\n\n**Year:** 2026 (Practice)  \n**Language:** English  \n**Time:** 1 Hour 30 Minutes  \n**Instructions:** Answer all questions. This is an ORIGINAL practice paper created for study purposes (not an official past paper).\n\n---\n\n## Section B \u2014 Structured (1 \u00d7 20 = 20 marks)\n1. (a) Define a key term related to Mathematics. (4)  \n   (b) Explain a process or concept with clear steps. (6)  \n   (c) Describe an experiment or real-world application. (4)  \n   (d) State safety/precautions or common mistakes. (6)\n\n---\n\n## Section C \u2014 Essay (1 \u00d7 40 = 40 marks)\n1. Discuss an important topic in Mathematics.  \n   Include key points, explanations, and examples.",
+      "mcq": [
+        {
+          "q": "Which is a renewable energy source?",
+          "options": [
+            "Coal",
+            "Solar",
+            "Diesel",
+            "Gasoline"
+          ]
+        },
+        {
+          "q": "The closest planet to the Sun is:",
+          "options": [
+            "Earth",
+            "Venus",
+            "Mercury",
+            "Mars"
+          ]
+        },
+        {
+          "q": "Water freezes at:",
+          "options": [
+            "0\u00b0C",
+            "10\u00b0C",
+            "50\u00b0C",
+            "100\u00b0C"
+          ]
+        },
+        {
+          "q": "A triangle has how many sides?",
+          "options": [
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "q": "Speed is:",
+          "options": [
+            "distance/time",
+            "time/distance",
+            "distance\u00d7time",
+            "distance+time"
+          ]
+        }
+      ],
+      "mcq_answer_key": {
+        "0": "B",
+        "1": "B",
+        "2": "D",
+        "3": "B",
+        "4": "A"
+      },
+      "marking_rubric": "Marking guidance:\n- MCQ: 1 mark each.\n- Structured: award marks for correct facts, steps, and clarity.\n- Essay: award marks for key points, explanations, and logical structure.\n",
+      "id": 100003,
+      "created_at": "2026-07-29T16:14:29.317574Z"
+    },
+    {
+      "id": 100001,
+      "title": "G.C.E. O/L Chemistry (Practice) \u2014 Demo",
+      "subject": "Chemistry",
+      "year": 2026,
+      "language": "English",
+      "source": "demo",
+      "created_at": "2026-07-29T10:00:00.000Z",
+      "content_markdown": "# G.C.E. O/L \u2014 Chemistry (Practice Paper)\n\n**Time:** 1 Hour 30 Minutes  \n**Instructions:** Answer all questions. This is an ORIGINAL practice paper (not an official past paper).\n\n---\n\n## Section B \u2014 Structured (1 \u00d7 20 = 20 marks)\n1. (a) Define **isotope** and give one example. (4)  \n   (b) Explain why **ionic compounds** conduct electricity when molten but not as solids. (6)  \n   (c) Describe an experiment to identify **CO\u2082 gas**. (4)  \n   (d) State two safety precautions when using acids in the lab. (6)\n\n---\n\n## Section C \u2014 Essay (1 \u00d7 40 = 40 marks)\n1. Discuss the factors affecting the **rate of reaction**.  \n   In your answer, include: concentration, temperature, surface area, catalysts, and collision theory.",
+      "mcq": [
+        {
+          "q": "Which particle has a positive charge?",
+          "options": [
+            "Electron",
+            "Proton",
+            "Neutron",
+            "Atom"
+          ]
+        },
+        {
+          "q": "The pH value of a neutral solution at 25\u00b0C is:",
+          "options": [
+            "0",
+            "7",
+            "14",
+            "1"
+          ]
+        },
+        {
+          "q": "Which of the following is a compound?",
+          "options": [
+            "O\u2082",
+            "N\u2082",
+            "H\u2082O",
+            "He"
+          ]
+        },
+        {
+          "q": "In the periodic table, elements in the same group have the same:",
+          "options": [
+            "Number of protons",
+            "Number of neutrons",
+            "Number of electron shells",
+            "Number of valence electrons"
+          ]
+        },
+        {
+          "q": "Which method is best to separate sand from water?",
+          "options": [
+            "Filtration",
+            "Distillation",
+            "Chromatography",
+            "Evaporation only"
+          ]
+        }
+      ],
+      "mcq_answer_key": {
+        "0": "B",
+        "1": "B",
+        "2": "C",
+        "3": "D",
+        "4": "A"
+      },
+      "marking_rubric": "Marking guidance:\n- Structured: award marks for correct definitions, correct reasoning, and clear steps.\n- Essay: award marks for key points, explanations, and logical structure.\n"
+    },
+    {
+      "id": 100002,
+      "title": "G.C.E. O/L Physics (Practice) \u2014 Demo",
+      "subject": "Physics",
+      "year": 2026,
+      "language": "English",
+      "source": "demo",
+      "created_at": "2026-07-29T10:05:00.000Z",
+      "content_markdown": "# G.C.E. O/L \u2014 Physics (Practice Paper)\n\n**Time:** 1 Hour 30 Minutes  \n**Instructions:** Answer all questions. This is an ORIGINAL practice paper (not an official past paper).\n\n---\n\n## Section B \u2014 Structured (1 \u00d7 20 = 20 marks)\n1. (a) Define **velocity** and **acceleration**. (6)  \n   (b) A car accelerates uniformly from rest to 20 m/s in 5 s. Calculate the acceleration. (4)  \n   (c) Explain why a seatbelt reduces injuries during a sudden stop. (4)  \n   (d) State two ways to reduce friction in a moving machine. (6)\n\n---\n\n## Section C \u2014 Essay (1 \u00d7 40 = 40 marks)\n1. Discuss how **electrical energy** is transferred and used in a household circuit.  \n   Include: series vs parallel, fuses/MCBs, earthing, and power calculation (P = VI).",
+      "mcq": [
+        {
+          "q": "The SI unit of force is:",
+          "options": [
+            "Joule",
+            "Newton",
+            "Watt",
+            "Pascal"
+          ]
+        },
+        {
+          "q": "A speed of 10 m/s is equal to:",
+          "options": [
+            "10 km/h",
+            "36 km/h",
+            "18 km/h",
+            "3.6 km/h"
+          ]
+        },
+        {
+          "q": "Which is an example of a scalar quantity?",
+          "options": [
+            "Velocity",
+            "Acceleration",
+            "Force",
+            "Mass"
+          ]
+        },
+        {
+          "q": "In a series circuit, the current is:",
+          "options": [
+            "Different in each component",
+            "Same through all components",
+            "Always zero",
+            "Only in the battery"
+          ]
+        },
+        {
+          "q": "The device used to measure electric current is:",
+          "options": [
+            "Voltmeter",
+            "Ammeter",
+            "Ohmmeter",
+            "Thermometer"
+          ]
+        }
+      ],
+      "mcq_answer_key": {
+        "0": "B",
+        "1": "B",
+        "2": "D",
+        "3": "B",
+        "4": "B"
+      },
+      "marking_rubric": "Marking guidance:\n- Structured: award marks for correct definitions, correct reasoning, and clear steps.\n- Essay: award marks for key points, explanations, and logical structure.\n"
+    }
+  ]
+}

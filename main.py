@@ -6,13 +6,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from auth.routes import router as auth_router
 from zoom_clone.routes import router as zoom_clone_router
 from whatsapp_clone.routes import router as whatsapp_router
+from exam_hub.routes import router as exam_hub_router
 
-app = FastAPI(title="Zoom Clone Multi-Backend Services")
+app = FastAPI(title="Multi-Backend Python Services")
 
 # Configure CORS
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
     "https://zoom-clone-ten-rose.vercel.app"
 ]
 
@@ -28,7 +31,9 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(zoom_clone_router)
 app.include_router(whatsapp_router)
+app.include_router(exam_hub_router)
 
 @app.get("/")
 def read_root():
-    return {"status": "ok", "service": "Zoom Clone Custom Auth Backend"}
+    return {"status": "ok", "service": "Multi-Backend Python Services"}
+
