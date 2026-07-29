@@ -14,6 +14,7 @@ app = FastAPI(title="Multi-Backend Python Services")
 
 # Configure CORS
 origins = [
+    "*",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:3001",
@@ -40,4 +41,10 @@ app.include_router(ai_browser_router)
 @app.get("/")
 def read_root():
     return {"status": "ok", "service": "Multi-Backend Python Services"}
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 9002))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
+
 
