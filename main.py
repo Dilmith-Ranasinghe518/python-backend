@@ -44,7 +44,7 @@ def read_root():
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 9002))
+    port = int(os.getenv("PORT") or os.getenv("SERVER_PORT") or 9002)
     uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
 
 
