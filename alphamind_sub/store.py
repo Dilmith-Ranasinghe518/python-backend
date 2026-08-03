@@ -1,60 +1,19 @@
-import os
-import json
 from typing import Dict, Any, Optional
 from database import db
 
 # MongoDB collection for AlphaMind Courses
 courses_collection = db.get_collection("alphamind_courses")
-JSON_STORE_PATH = os.path.join(os.path.dirname(__file__), "alphamind_courses.json")
-
-def load_initial_json_courses() -> Dict[str, Any]:
-    if os.path.exists(JSON_STORE_PATH):
-        try:
-            with open(JSON_STORE_PATH, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                if data:
-                    return data
-        except Exception as e:
-            print(f"Error loading initial JSON store: {e}")
-    return {}
-
-def seed_mongodb_from_json_if_empty() -> None:
-    try:
-        if courses_collection.count_documents({}) == 0:
-            initial_data = load_initial_json_courses()
-            if initial_data:
-                for cid, cdata in initial_data.items():
-                    courses_collection.update_one(
-                        {"id": cdata["id"]},
-                        {"$set": cdata},
-                        upsert=True
-                    )
-                print("Seeded MongoDB alphamind_courses collection with initial course data.")
-    except Exception as e:
-        print(f"MongoDB seeding check error: {e}")
-
-# Run seed check on module load
-seed_mongodb_from_json_if_empty()
 
 def get_all_courses() -> Dict[str, Any]:
     try:
         docs = list(courses_collection.find({}, {"_id": 0}))
-        if docs:
-            res = {}
-            for doc in docs:
-                res[str(doc["id"])] = doc
-            return res
-        else:
-            # Fallback to initial JSON if database is empty
-            seed_mongodb_from_json_if_empty()
-            docs = list(courses_collection.find({}, {"_id": 0}))
-            res = {}
-            for doc in docs:
-                res[str(doc["id"])] = doc
-            return res
+        res = {}
+        for doc in docs:
+            res[str(doc["id"])] = doc
+        return res
     except Exception as e:
         print(f"MongoDB get_all_courses error: {e}")
-        return load_initial_json_courses()
+        return {}
 
 def get_course_by_id(course_id: int) -> Optional[Dict[str, Any]]:
     try:
@@ -77,7 +36,7 @@ def save_or_update_course(course_data: Dict[str, Any]) -> Dict[str, Any]:
     else:
         course_data["id"] = int(course_data["id"])
     
-    # Save exclusively to MongoDB
+    # Save directly to MongoDB
     try:
         courses_collection.update_one(
             {"id": course_data["id"]},
