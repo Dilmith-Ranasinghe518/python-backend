@@ -6,6 +6,7 @@ courses_collection = db.get_collection("alphamind_courses")
 courses_page_collection = db.get_collection("alphamind_courses_page")
 books_page_collection = db.get_collection("alphamind_books_page")
 short_notes_page_collection = db.get_collection("alphamind_short_notes_page")
+revision_page_collection = db.get_collection("alphamind_revision_page")
 
 DEFAULT_COURSES_PAGE_DATA = {
     "heroImage": "/images/Poster1.jpg",
@@ -461,6 +462,145 @@ def save_short_notes_page_data(data: Dict[str, Any]) -> Dict[str, Any]:
         print("Successfully saved ShortNotesPageData in MongoDB")
     except Exception as e:
         print(f"MongoDB save_short_notes_page_data error: {e}")
+        raise e
+    return data
+
+DEFAULT_REVISION_PAGE_DATA = {
+    "heroImage": "/images/Poster1.jpg",
+    "carouselItems": [
+        {
+            "id": "slide-1",
+            "name": "Combined Maths",
+            "image": "/images/Poster1.jpg",
+            "badge": "Popular",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-2",
+            "name": "Physics",
+            "image": "/images/Poster3.jpg",
+            "badge": "Best seller",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-3",
+            "name": "Chemistry",
+            "image": "/images/Poster5.jpg",
+            "badge": "New",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-4",
+            "name": "Biology",
+            "image": "/images/Poster7.jpg",
+            "badge": "Popular",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-5",
+            "name": "ICT",
+            "image": "/images/Poster8.jpg",
+            "badge": "Best seller",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-6",
+            "name": "Business Studies",
+            "image": "/images/Poster9.jpg",
+            "badge": "New",
+            "pill": "Free with Plus"
+        }
+    ],
+    "contents": [
+        {
+            "id": "cnt-r1",
+            "subjectId": "slide-1",
+            "title": "Introduction",
+            "subcontents": [
+                {
+                    "id": "sub-r1",
+                    "title": "What is Generative AI?",
+                    "duration": "5m 23s video",
+                    "completed": False,
+                    "videoUrl": "https://www.youtube.com/watch?v=1ukSR1GRtMU",
+                    "description": "Understand the fundamentals of generative artificial intelligence and its applications.",
+                    "resources": [],
+                    "studyMaterials": ["/images/Poster1.jpg"]
+                },
+                {
+                    "id": "sub-r2",
+                    "title": "Understanding Foundation Models",
+                    "duration": "8m 45s video",
+                    "completed": False,
+                    "videoUrl": "https://www.youtube.com/watch?v=bKueYVtV0eA",
+                    "description": "Explore foundation models and their role as the building blocks of modern GenAI.",
+                    "resources": [],
+                    "studyMaterials": ["/images/Poster3.jpg"]
+                }
+            ]
+        }
+    ],
+    "contentCards": [
+        {
+            "id": "rev-1",
+            "subcontentId": "sub-r1",
+            "title": "The Sales Program",
+            "subtitle": "Taught by Best-Selling Author Jeffrey Gitomer.",
+            "description": "You cannot succeed in business without knowing how to sell. In this program, Jeffrey Gitomer will teach you the ins and outs of sales...",
+            "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80",
+            "badge": "HOT",
+            "learners": "300+ student reviews",
+            "rating": "4.6",
+            "pill": "Free with Plus",
+            "price": "520",
+            "ratingValue": "4.6"
+        },
+        {
+            "id": "rev-2",
+            "subcontentId": "sub-r2",
+            "title": "Foundation Models Masterclass",
+            "subtitle": "Taught by Industry Experts.",
+            "description": "Deep dive into model fine-tuning, prompt engineering, and real-world AI deployment techniques.",
+            "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80",
+            "badge": "NEW",
+            "learners": "450+ student reviews",
+            "rating": "4.8",
+            "pill": "Free with Plus",
+            "price": "580",
+            "ratingValue": "4.8"
+        }
+    ]
+}
+
+def get_revision_page_data() -> Dict[str, Any]:
+    try:
+        doc = revision_page_collection.find_one({"pageId": "revision_page"}, {"_id": 0})
+        if doc:
+            return doc
+        else:
+            # Seed initial page data
+            data = {"pageId": "revision_page", **DEFAULT_REVISION_PAGE_DATA}
+            revision_page_collection.update_one(
+                {"pageId": "revision_page"},
+                {"$set": data},
+                upsert=True
+            )
+            return data
+    except Exception as e:
+        print(f"MongoDB get_revision_page_data error: {e}")
+        return {"pageId": "revision_page", **DEFAULT_REVISION_PAGE_DATA}
+
+def save_revision_page_data(data: Dict[str, Any]) -> Dict[str, Any]:
+    data["pageId"] = "revision_page"
+    try:
+        revision_page_collection.update_one(
+            {"pageId": "revision_page"},
+            {"$set": data},
+            upsert=True
+        )
+        print("Successfully saved RevisionPageData in MongoDB")
+    except Exception as e:
+        print(f"MongoDB save_revision_page_data error: {e}")
         raise e
     return data
 

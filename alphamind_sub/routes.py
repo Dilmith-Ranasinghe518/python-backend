@@ -3,7 +3,7 @@ import uuid
 import shutil
 from typing import Dict, Any, Optional
 from fastapi import APIRouter, HTTPException, UploadFile, File
-from alphamind_sub.models import AdminLoginRequest, AdminLoginResponse, Course, CoursesPageData, BooksPageData, ShortNotesPageData
+from alphamind_sub.models import AdminLoginRequest, AdminLoginResponse, Course, CoursesPageData, BooksPageData, ShortNotesPageData, RevisionPageData
 from alphamind_sub.store import (
     get_all_courses,
     get_course_by_id,
@@ -14,7 +14,9 @@ from alphamind_sub.store import (
     get_books_page_data,
     save_books_page_data,
     get_short_notes_page_data,
-    save_short_notes_page_data
+    save_short_notes_page_data,
+    get_revision_page_data,
+    save_revision_page_data
 )
 
 router = APIRouter()
@@ -73,6 +75,18 @@ def update_short_notes_page(data: ShortNotesPageData):
     payload = data.model_dump()
     saved = save_short_notes_page_data(payload)
     return {"success": True, "message": "Short notes page data saved successfully", "data": saved}
+
+# --- Structured Revision Page API Endpoints ---
+@router.get("/revision-page")
+def get_revision_page():
+    data = get_revision_page_data()
+    return {"success": True, "data": data}
+
+@router.post("/revision-page")
+def update_revision_page(data: RevisionPageData):
+    payload = data.model_dump()
+    saved = save_revision_page_data(payload)
+    return {"success": True, "message": "Revision page data saved successfully", "data": saved}
 
 # --- Image Upload Endpoint ---
 @router.post("/upload")

@@ -67,6 +67,12 @@ class ShortNotesPageData(BaseModel):
     contents: List[Content] = []
     contentCards: List[ContentCard] = []
 
+class RevisionPageData(BaseModel):
+    heroImage: Optional[str] = "/images/Poster1.jpg"
+    carouselItems: List[CarouselItem] = []
+    contents: List[Content] = []
+    contentCards: List[ContentCard] = []
+
 # Legacy Models for backward compatibility
 class Lesson(BaseModel):
     id: int
