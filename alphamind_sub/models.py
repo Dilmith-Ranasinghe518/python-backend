@@ -68,6 +68,14 @@ class ShortNotesPageData(BaseModel):
     contentCards: List[ContentCard] = []
 
 class RevisionPageData(BaseModel):
+    heroImage: Optional[str] = "/images/Poster1.jpg font-bold"
+    carouselItems: List[CarouselItem] = []
+    contents: List[Content] = []
+    contentCards: List[ContentCard] = []
+
+class ExamHubPageData(BaseModel):
+    heroTitle: Optional[str] = "Master O/L & A/L Exam Papers"
+    heroSubtitle: Optional[str] = "Practice with authentic past papers, instant MCQ auto-grader, AI-evaluated written answers, and custom paper generators."
     heroImage: Optional[str] = "/images/Poster1.jpg"
     carouselItems: List[CarouselItem] = []
     contents: List[Content] = []

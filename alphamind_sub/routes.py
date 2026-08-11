@@ -36,7 +36,7 @@ def generate_stream_token(user_id: str) -> str:
 router = APIRouter()
 from alphamind_sub.models import (
     AdminLoginRequest, AdminLoginResponse, Course, CoursesPageData,
-    BooksPageData, ShortNotesPageData, RevisionPageData, AuthConfigData,
+    BooksPageData, ShortNotesPageData, RevisionPageData, ExamHubPageData, AuthConfigData,
     UserRegisterRequest, UserLoginRequest, UserForgotPasswordRequest, AuthUserResponse
 )
 from alphamind_sub.store import (
@@ -52,6 +52,8 @@ from alphamind_sub.store import (
     save_short_notes_page_data,
     get_revision_page_data,
     save_revision_page_data,
+    get_exam_hub_page_data,
+    save_exam_hub_page_data,
     get_auth_config_data,
     save_auth_config_data,
     register_user,
@@ -127,6 +129,18 @@ def update_revision_page(data: RevisionPageData):
     payload = data.model_dump()
     saved = save_revision_page_data(payload)
     return {"success": True, "message": "Revision page data saved successfully", "data": saved}
+
+# --- Exam Hub Page Endpoints ---
+@router.get("/exam-hub-page")
+def get_exam_hub_page():
+    data = get_exam_hub_page_data()
+    return {"success": True, "data": data}
+
+@router.post("/exam-hub-page")
+def update_exam_hub_page(data: ExamHubPageData):
+    payload = data.model_dump()
+    saved = save_exam_hub_page_data(payload)
+    return {"success": True, "message": "Exam Hub page data saved successfully", "data": saved}
 
 # --- Auth Config Endpoints ---
 @router.get("/auth-config")

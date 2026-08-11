@@ -7,6 +7,7 @@ courses_page_collection = db.get_collection("alphamind_courses_page")
 books_page_collection = db.get_collection("alphamind_books_page")
 short_notes_page_collection = db.get_collection("alphamind_short_notes_page")
 revision_page_collection = db.get_collection("alphamind_revision_page")
+exam_hub_page_collection = db.get_collection("alphamind_exam_hub_page")
 auth_config_collection = db.get_collection("alphamind_auth_config")
 users_collection = db.get_collection("alphamind_users")
 
@@ -603,6 +604,46 @@ def save_revision_page_data(data: Dict[str, Any]) -> Dict[str, Any]:
         print("Successfully saved RevisionPageData in MongoDB")
     except Exception as e:
         print(f"MongoDB save_revision_page_data error: {e}")
+        raise e
+    return data
+
+DEFAULT_EXAM_HUB_PAGE_DATA = {
+    "heroTitle": "Master O/L & A/L Exam Papers",
+    "heroSubtitle": "Practice with authentic past papers, instant MCQ auto-grader, AI-evaluated written answers, and custom paper generators.",
+    "heroImage": "/images/Poster1.jpg",
+    "carouselItems": DEFAULT_COURSES_PAGE_DATA["carouselItems"],
+    "contents": DEFAULT_COURSES_PAGE_DATA["contents"],
+    "contentCards": DEFAULT_COURSES_PAGE_DATA["contentCards"]
+}
+
+def get_exam_hub_page_data() -> Dict[str, Any]:
+    try:
+        doc = exam_hub_page_collection.find_one({"pageId": "exam_hub_page"}, {"_id": 0})
+        if doc:
+            return doc
+        else:
+            data = {"pageId": "exam_hub_page", **DEFAULT_EXAM_HUB_PAGE_DATA}
+            exam_hub_page_collection.update_one(
+                {"pageId": "exam_hub_page"},
+                {"$set": data},
+                upsert=True
+            )
+            return data
+    except Exception as e:
+        print(f"MongoDB get_exam_hub_page_data error: {e}")
+        return {"pageId": "exam_hub_page", **DEFAULT_EXAM_HUB_PAGE_DATA}
+
+def save_exam_hub_page_data(data: Dict[str, Any]) -> Dict[str, Any]:
+    data["pageId"] = "exam_hub_page"
+    try:
+        exam_hub_page_collection.update_one(
+            {"pageId": "exam_hub_page"},
+            {"$set": data},
+            upsert=True
+        )
+        print("Successfully saved ExamHubPageData in MongoDB")
+    except Exception as e:
+        print(f"MongoDB save_exam_hub_page_data error: {e}")
         raise e
     return data
 
