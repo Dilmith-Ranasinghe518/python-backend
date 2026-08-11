@@ -5,6 +5,7 @@ from database import db
 courses_collection = db.get_collection("alphamind_courses")
 courses_page_collection = db.get_collection("alphamind_courses_page")
 books_page_collection = db.get_collection("alphamind_books_page")
+short_notes_page_collection = db.get_collection("alphamind_short_notes_page")
 
 DEFAULT_COURSES_PAGE_DATA = {
     "heroImage": "/images/Poster1.jpg",
@@ -304,6 +305,162 @@ def save_books_page_data(data: Dict[str, Any]) -> Dict[str, Any]:
         print("Successfully saved BooksPageData in MongoDB")
     except Exception as e:
         print(f"MongoDB save_books_page_data error: {e}")
+        raise e
+    return data
+
+DEFAULT_SHORT_NOTES_PAGE_DATA = {
+    "heroImage": "/images/Poster1.jpg",
+    "carouselItems": [
+        {
+            "id": "slide-1",
+            "name": "Combined Maths",
+            "image": "/images/Poster1.jpg",
+            "badge": "Popular",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-2",
+            "name": "Physics",
+            "image": "/images/Poster3.jpg",
+            "badge": "Best seller",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-3",
+            "name": "Chemistry",
+            "image": "/images/Poster5.jpg",
+            "badge": "New",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-4",
+            "name": "Biology",
+            "image": "/images/Poster7.jpg",
+            "badge": "Popular",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-5",
+            "name": "ICT",
+            "image": "/images/Poster8.jpg",
+            "badge": "Best seller",
+            "pill": "Free with Plus"
+        },
+        {
+            "id": "slide-6",
+            "name": "Business Studies",
+            "image": "/images/Poster9.jpg",
+            "badge": "New",
+            "pill": "Free with Plus"
+        }
+    ],
+    "contents": [
+        {
+            "id": "cnt-sn1",
+            "subjectId": "slide-1",
+            "title": "Introduction",
+            "subcontents": [
+                {
+                    "id": "sub-sn1",
+                    "title": "What is Generative AI?",
+                    "duration": "5m 23s video",
+                    "completed": False,
+                    "videoUrl": "https://www.youtube.com/watch?v=1ukSR1GRtMU",
+                    "description": "Understand the fundamentals of generative artificial intelligence and its applications.",
+                    "resources": [],
+                    "studyMaterials": ["/images/Poster1.jpg"]
+                },
+                {
+                    "id": "sub-sn2",
+                    "title": "Understanding Foundation Models",
+                    "duration": "8m 45s video",
+                    "completed": False,
+                    "videoUrl": "https://www.youtube.com/watch?v=bKueYVtV0eA",
+                    "description": "Explore foundation models and their role as the building blocks of modern GenAI.",
+                    "resources": [],
+                    "studyMaterials": ["/images/Poster3.jpg"]
+                }
+            ]
+        }
+    ],
+    "contentCards": [
+        {
+            "id": "r1-1",
+            "subcontentId": "sub-sn1",
+            "title": "Deadpool 2",
+            "subtitle": "Short Note Summary",
+            "description": "Comprehensive short notes on key principles.",
+            "image": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=80",
+            "badge": "Popular",
+            "learners": "133,854",
+            "rating": "8.1",
+            "pill": "Free with Plus",
+            "price": "520",
+            "ratingValue": "8.1",
+            "year": "2018"
+        },
+        {
+            "id": "r1-2",
+            "subcontentId": "sub-sn2",
+            "title": "October",
+            "subtitle": "Short Note Summary",
+            "description": "Essential revision notes.",
+            "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80",
+            "badge": "Best seller",
+            "learners": "136,041",
+            "rating": "8.0",
+            "pill": "Free with Plus",
+            "price": "550",
+            "ratingValue": "8.0",
+            "year": "2018"
+        },
+        {
+            "id": "r1-3",
+            "subcontentId": "sub-sn1",
+            "title": "The Meg",
+            "subtitle": "Short Note Summary",
+            "description": "Quick overview and study material.",
+            "image": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80",
+            "badge": "New",
+            "learners": "140,210",
+            "rating": "6.4",
+            "pill": "Free with Plus",
+            "price": "490",
+            "ratingValue": "6.4",
+            "year": "2018"
+        }
+    ]
+}
+
+def get_short_notes_page_data() -> Dict[str, Any]:
+    try:
+        doc = short_notes_page_collection.find_one({"pageId": "short_notes_page"}, {"_id": 0})
+        if doc:
+            return doc
+        else:
+            # Seed initial page data
+            data = {"pageId": "short_notes_page", **DEFAULT_SHORT_NOTES_PAGE_DATA}
+            short_notes_page_collection.update_one(
+                {"pageId": "short_notes_page"},
+                {"$set": data},
+                upsert=True
+            )
+            return data
+    except Exception as e:
+        print(f"MongoDB get_short_notes_page_data error: {e}")
+        return {"pageId": "short_notes_page", **DEFAULT_SHORT_NOTES_PAGE_DATA}
+
+def save_short_notes_page_data(data: Dict[str, Any]) -> Dict[str, Any]:
+    data["pageId"] = "short_notes_page"
+    try:
+        short_notes_page_collection.update_one(
+            {"pageId": "short_notes_page"},
+            {"$set": data},
+            upsert=True
+        )
+        print("Successfully saved ShortNotesPageData in MongoDB")
+    except Exception as e:
+        print(f"MongoDB save_short_notes_page_data error: {e}")
         raise e
     return data
 
