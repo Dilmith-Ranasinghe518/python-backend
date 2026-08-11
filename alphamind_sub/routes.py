@@ -1,8 +1,39 @@
 import os
 import uuid
 import shutil
+import time
+import hmac
+import hashlib
+import base64
+import json
 from typing import Dict, Any, Optional
 from fastapi import APIRouter, HTTPException, UploadFile, File
+
+STREAM_API_KEY = os.getenv("STREAM_API_KEY", "uehktzarjj8e")
+STREAM_SECRET_KEY = os.getenv("STREAM_SECRET_KEY", "e4jf4ta73by5vsa2kqxr62ghbzyban5q3y8dezm9z3tzt5rcy3ymqvfe2r2ygp9j")
+
+def _base64url_encode(input_bytes: bytes) -> str:
+    return base64.urlsafe_b64encode(input_bytes).decode('utf-8').rstrip('=')
+
+def generate_stream_token(user_id: str) -> str:
+    header = {"alg": "HS256", "typ": "JWT"}
+    now = int(time.time())
+    payload = {
+        "user_id": user_id,
+        "iat": now - 60,
+        "exp": now + 3600 * 24
+    }
+    
+    header_b64 = _base64url_encode(json.dumps(header, separators=(',', ':')).encode('utf-8'))
+    payload_b64 = _base64url_encode(json.dumps(payload, separators=(',', ':')).encode('utf-8'))
+    
+    signing_input = f"{header_b64}.{payload_b64}".encode('utf-8')
+    signature = hmac.new(STREAM_SECRET_KEY.encode('utf-8'), signing_input, hashlib.sha256).digest()
+    signature_b64 = _base64url_encode(signature)
+    
+    return f"{header_b64}.{payload_b64}.{signature_b64}"
+
+router = APIRouter()
 from alphamind_sub.models import (
     AdminLoginRequest, AdminLoginResponse, Course, CoursesPageData,
     BooksPageData, ShortNotesPageData, RevisionPageData, AuthConfigData,
@@ -130,6 +161,13 @@ def user_forgot_password(req: UserForgotPasswordRequest):
     if not result.get("success"):
         raise HTTPException(status_code=400, detail=result.get("message"))
     return AuthUserResponse(**result)
+
+@router.get("/stream-token")
+def get_stream_token(userId: str):
+    if not userId or not userId.strip():
+        raise HTTPException(status_code=400, detail="userId parameter is required")
+    token = generate_stream_token(userId.strip())
+    return {"success": True, "token": token, "apiKey": STREAM_API_KEY}
 
 # --- Image Upload Endpoint ---
 @router.post("/upload")
