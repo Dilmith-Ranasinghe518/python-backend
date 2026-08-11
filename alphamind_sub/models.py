@@ -45,8 +45,16 @@ class ContentCard(BaseModel):
     learners: Optional[str] = "133,854"
     rating: Optional[str] = "95% (2.65K)"
     pill: Optional[str] = "Free with Plus"
+    price: Optional[str] = "520"
+    ratingValue: Optional[str] = "4.8"
 
 class CoursesPageData(BaseModel):
+    heroImage: Optional[str] = "/images/Poster1.jpg"
+    carouselItems: List[CarouselItem] = []
+    contents: List[Content] = []
+    contentCards: List[ContentCard] = []
+
+class BooksPageData(BaseModel):
     heroImage: Optional[str] = "/images/Poster1.jpg"
     carouselItems: List[CarouselItem] = []
     contents: List[Content] = []

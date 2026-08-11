@@ -3,14 +3,16 @@ import uuid
 import shutil
 from typing import Dict, Any, Optional
 from fastapi import APIRouter, HTTPException, UploadFile, File
-from alphamind_sub.models import AdminLoginRequest, AdminLoginResponse, Course, CoursesPageData
+from alphamind_sub.models import AdminLoginRequest, AdminLoginResponse, Course, CoursesPageData, BooksPageData
 from alphamind_sub.store import (
     get_all_courses,
     get_course_by_id,
     save_or_update_course,
     delete_course_by_id,
     get_courses_page_data,
-    save_courses_page_data
+    save_courses_page_data,
+    get_books_page_data,
+    save_books_page_data
 )
 
 router = APIRouter()
@@ -45,6 +47,18 @@ def update_courses_page(data: CoursesPageData):
     payload = data.model_dump()
     saved = save_courses_page_data(payload)
     return {"success": True, "message": "Courses page data saved successfully", "data": saved}
+
+# --- Structured Books Page API Endpoints ---
+@router.get("/books-page")
+def get_books_page():
+    data = get_books_page_data()
+    return {"success": True, "data": data}
+
+@router.post("/books-page")
+def update_books_page(data: BooksPageData):
+    payload = data.model_dump()
+    saved = save_books_page_data(payload)
+    return {"success": True, "message": "Books page data saved successfully", "data": saved}
 
 # --- Image Upload Endpoint ---
 @router.post("/upload")
