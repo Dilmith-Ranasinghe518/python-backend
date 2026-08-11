@@ -73,6 +73,31 @@ class RevisionPageData(BaseModel):
     contents: List[Content] = []
     contentCards: List[ContentCard] = []
 
+class AuthConfigData(BaseModel):
+    backgroundImage: Optional[str] = "/images/login-hero.jpeg"
+    loginTitle: Optional[str] = "Sign in to QC"
+    signupTitle: Optional[str] = "Create your account"
+    forgotPasswordTitle: Optional[str] = "Reset your password"
+
+class UserRegisterRequest(BaseModel):
+    fullName: str
+    identifier: str  # email or phone or username
+    password: str
+
+class UserLoginRequest(BaseModel):
+    identifier: str  # email or phone or username
+    password: str
+
+class UserForgotPasswordRequest(BaseModel):
+    identifier: str  # email or phone or username
+    newPassword: Optional[str] = None
+
+class AuthUserResponse(BaseModel):
+    success: bool
+    message: str
+    token: Optional[str] = None
+    user: Optional[Dict[str, Any]] = None
+
 # Legacy Models for backward compatibility
 class Lesson(BaseModel):
     id: int

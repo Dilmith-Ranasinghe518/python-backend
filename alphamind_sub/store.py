@@ -7,6 +7,8 @@ courses_page_collection = db.get_collection("alphamind_courses_page")
 books_page_collection = db.get_collection("alphamind_books_page")
 short_notes_page_collection = db.get_collection("alphamind_short_notes_page")
 revision_page_collection = db.get_collection("alphamind_revision_page")
+auth_config_collection = db.get_collection("alphamind_auth_config")
+users_collection = db.get_collection("alphamind_users")
 
 DEFAULT_COURSES_PAGE_DATA = {
     "heroImage": "/images/Poster1.jpg",
@@ -603,6 +605,110 @@ def save_revision_page_data(data: Dict[str, Any]) -> Dict[str, Any]:
         print(f"MongoDB save_revision_page_data error: {e}")
         raise e
     return data
+
+DEFAULT_AUTH_CONFIG_DATA = {
+    "backgroundImage": "/images/login-hero.jpeg",
+    "loginTitle": "Sign in to QC",
+    "signupTitle": "Create your account",
+    "forgotPasswordTitle": "Reset your password"
+}
+
+def get_auth_config_data() -> Dict[str, Any]:
+    try:
+        doc = auth_config_collection.find_one({"configId": "auth_config"}, {"_id": 0})
+        if doc:
+            return doc
+        else:
+            data = {"configId": "auth_config", **DEFAULT_AUTH_CONFIG_DATA}
+            auth_config_collection.update_one(
+                {"configId": "auth_config"},
+                {"$set": data},
+                upsert=True
+            )
+            return data
+    except Exception as e:
+        print(f"MongoDB get_auth_config_data error: {e}")
+        return {"configId": "auth_config", **DEFAULT_AUTH_CONFIG_DATA}
+
+def save_auth_config_data(data: Dict[str, Any]) -> Dict[str, Any]:
+    data["configId"] = "auth_config"
+    try:
+        auth_config_collection.update_one(
+            {"configId": "auth_config"},
+            {"$set": data},
+            upsert=True
+        )
+        print("Successfully saved AuthConfigData in MongoDB")
+    except Exception as e:
+        print(f"MongoDB save_auth_config_data error: {e}")
+        raise e
+    return data
+
+import hashlib
+import uuid
+
+def _hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+def register_user(full_name: str, identifier: str, password: str) -> Dict[str, Any]:
+    clean_identifier = identifier.strip().lower()
+    existing = users_collection.find_one({"identifier": clean_identifier})
+    if existing:
+        return {"success": False, "message": "User with this email/phone already exists"}
+
+    user_id = str(uuid.uuid4())
+    token = f"user-token-{uuid.uuid4().hex}"
+    user_doc = {
+        "userId": user_id,
+        "fullName": full_name,
+        "identifier": clean_identifier,
+        "passwordHash": _hash_password(password),
+        "createdAt": str(uuid.uuid4())
+    }
+    try:
+        users_collection.insert_one(user_doc)
+        return {
+            "success": True,
+            "message": "Registration successful",
+            "token": token,
+            "user": {"userId": user_id, "fullName": full_name, "identifier": clean_identifier}
+        }
+    except Exception as e:
+        print(f"MongoDB register_user error: {e}")
+        return {"success": False, "message": f"Registration failed: {str(e)}"}
+
+def login_user(identifier: str, password: str) -> Dict[str, Any]:
+    clean_identifier = identifier.strip().lower()
+    user = users_collection.find_one({"identifier": clean_identifier})
+    if not user:
+        return {"success": False, "message": "User not found. Please register first."}
+
+    if user.get("passwordHash") != _hash_password(password):
+        return {"success": False, "message": "Incorrect password. Please try again."}
+
+    token = f"user-token-{uuid.uuid4().hex}"
+    return {
+        "success": True,
+        "message": "Login successful",
+        "token": token,
+        "user": {"userId": user.get("userId"), "fullName": user.get("fullName"), "identifier": clean_identifier}
+    }
+
+def forgot_password_user(identifier: str, new_password: Optional[str] = None) -> Dict[str, Any]:
+    clean_identifier = identifier.strip().lower()
+    user = users_collection.find_one({"identifier": clean_identifier})
+    if not user:
+        return {"success": False, "message": "No account found matching this identifier."}
+
+    if new_password and new_password.strip():
+        new_hash = _hash_password(new_password)
+        users_collection.update_one(
+            {"identifier": clean_identifier},
+            {"$set": {"passwordHash": new_hash}}
+        )
+        return {"success": True, "message": "Password updated successfully. You can now log in."}
+    else:
+        return {"success": True, "message": "Account verified. Please enter your new password to reset."}
 
 # Legacy Course functions for backward compatibility
 def get_all_courses() -> Dict[str, Any]:

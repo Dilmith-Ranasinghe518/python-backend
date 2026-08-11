@@ -3,7 +3,11 @@ import uuid
 import shutil
 from typing import Dict, Any, Optional
 from fastapi import APIRouter, HTTPException, UploadFile, File
-from alphamind_sub.models import AdminLoginRequest, AdminLoginResponse, Course, CoursesPageData, BooksPageData, ShortNotesPageData, RevisionPageData
+from alphamind_sub.models import (
+    AdminLoginRequest, AdminLoginResponse, Course, CoursesPageData,
+    BooksPageData, ShortNotesPageData, RevisionPageData, AuthConfigData,
+    UserRegisterRequest, UserLoginRequest, UserForgotPasswordRequest, AuthUserResponse
+)
 from alphamind_sub.store import (
     get_all_courses,
     get_course_by_id,
@@ -16,7 +20,12 @@ from alphamind_sub.store import (
     get_short_notes_page_data,
     save_short_notes_page_data,
     get_revision_page_data,
-    save_revision_page_data
+    save_revision_page_data,
+    get_auth_config_data,
+    save_auth_config_data,
+    register_user,
+    login_user,
+    forgot_password_user
 )
 
 router = APIRouter()
@@ -87,6 +96,40 @@ def update_revision_page(data: RevisionPageData):
     payload = data.model_dump()
     saved = save_revision_page_data(payload)
     return {"success": True, "message": "Revision page data saved successfully", "data": saved}
+
+# --- Auth Config Endpoints ---
+@router.get("/auth-config")
+def get_auth_config():
+    data = get_auth_config_data()
+    return {"success": True, "data": data}
+
+@router.post("/auth-config")
+def update_auth_config(data: AuthConfigData):
+    payload = data.model_dump()
+    saved = save_auth_config_data(payload)
+    return {"success": True, "message": "Auth config saved successfully", "data": saved}
+
+# --- User Auth Endpoints ---
+@router.post("/user/register", response_model=AuthUserResponse)
+def user_register(req: UserRegisterRequest):
+    result = register_user(req.fullName, req.identifier, req.password)
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("message"))
+    return AuthUserResponse(**result)
+
+@router.post("/user/login", response_model=AuthUserResponse)
+def user_login(req: UserLoginRequest):
+    result = login_user(req.identifier, req.password)
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("message"))
+    return AuthUserResponse(**result)
+
+@router.post("/user/forgot-password", response_model=AuthUserResponse)
+def user_forgot_password(req: UserForgotPasswordRequest):
+    result = forgot_password_user(req.identifier, req.newPassword)
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("message"))
+    return AuthUserResponse(**result)
 
 # --- Image Upload Endpoint ---
 @router.post("/upload")
